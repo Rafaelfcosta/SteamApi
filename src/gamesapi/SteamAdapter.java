@@ -57,9 +57,13 @@ public class SteamAdapter implements GamesAPIController{
     public ArrayList<String> getOwnedGamesNames(){
         ArrayList<String> gamesList = new ArrayList<>();
 //          System.out.println("Total Games: " + ownedGames.getResponse().getGameCount());
+        
         for (Game game : ownedGames.getResponse().getGames()) {
-            gamesList.add(game.getName());
+            if(game.getPlaytimeForever() > 2000){
+                gamesList.add(game.getName());
+            }
         }
+        
         return gamesList;
     }
 
@@ -90,14 +94,19 @@ public class SteamAdapter implements GamesAPIController{
 
     @Override
     public Map<String, ImageIcon> getGameImagesMap(){
+        
         Map<String, ImageIcon> map = new HashMap<>();
         try {
             for (Game game : ownedGames.getResponse().getGames()) {
-                map.put(game.getName(), new ImageIcon(new URL(game.getImgIconUrl())));
+                if(game.getPlaytimeForever() > 2000){
+                    map.put(game.getName(), new ImageIcon(new URL("http://media.steampowered.com/steamcommunity/public/images/apps/" + game.getAppid() + "/"  + game.getImgLogoUrl() + ".jpg" )));
+                }
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         return map;
     }
+    
+    
 }

@@ -10,8 +10,16 @@ import com.lukaspradel.steamapi.webapi.request.ResolveVanityURLRequest;
 import com.lukaspradel.steamapi.webapi.request.builders.SteamWebApiRequestFactory;
 import gamesapi.GamesAPIController;
 import gamesapi.SteamAdapter;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.DefaultListModel;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -42,10 +50,11 @@ public class SteamApi {
         ArrayList<String> gamesList = controller.getOwnedGamesNames();
         ArrayList<Integer> playtimeList = controller.getOwnedGamesPlaytimeForever();
         
-        exibir(gamesList);
-        exibir(playtimeList);
+//        exibir(gamesList);
+//        exibir(playtimeList);
         
-        exibir("Most played game: " + controller.getMostPlayedGame());
+          exibirJList(gamesList);
+//        exibir("Most played game: " + controller.getMostPlayedGame());
     }
     
     private static String ler(String msg){
@@ -71,5 +80,40 @@ public class SteamApi {
         JScrollPane sp =new JScrollPane(textArea);
         sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         JOptionPane.showMessageDialog(null, sp);
-    }    
+    }
+    
+    private static void exibirJList(ArrayList<?> games){
+        DefaultListModel<String> model = new DefaultListModel();
+        for (Object game : games) {
+            model.addElement((String) game);
+        }
+        JList list = new JList(model);
+        list.setCellRenderer(new ImagesListRenderer());
+        
+        JScrollPane scroll = new JScrollPane(list);
+        scroll.setPreferredSize(new Dimension(800, 600));
+        
+        JFrame frame = new JFrame();
+        frame.add(scroll);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+
+    public static class ImagesListRenderer extends DefaultListCellRenderer{
+        Font font = new Font("helvetica", Font.BOLD, 12);
+        
+        @Override
+        public Component getListCellRendererComponent(
+                JList list, Object value, int index, 
+                boolean isSelected, boolean cellHasFocus){
+            JLabel label = (JLabel) super.getListCellRendererComponent(
+                    list, value, index, isSelected, cellHasFocus);
+            label.setIcon(controller.getGameImagesMap().get((String) value));
+            label.setHorizontalTextPosition(JLabel.RIGHT);
+            label.setFont(font);
+            return label;
+        }
+    }
 }
