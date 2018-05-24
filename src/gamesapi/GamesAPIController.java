@@ -1,15 +1,16 @@
 package gamesapi;
 
-import com.lukaspradel.steamapi.core.exception.SteamApiException;
 import java.util.ArrayList;
+import java.util.Map;
+import javax.swing.ImageIcon;
 
 /**
  *
  * @author Rafael F
  */
 public interface GamesAPIController {
-    ArrayList<String> getOwnedGamesNames(String usernameOrId) throws SteamApiException;
-    ArrayList<Integer> getOwnedGamesPlaytimeForever(String usernameOrId) throws SteamApiException;
-    String getMostPlayedGame(String usernameOrId) throws SteamApiException;
-    
+    ArrayList<String> getOwnedGamesNames();
+    ArrayList<Integer> getOwnedGamesPlaytimeForever();
+    String getMostPlayedGame();
+    Map<String, ImageIcon> getGameImagesMap();
 }

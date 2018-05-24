@@ -26,7 +26,7 @@ import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 public class SteamApi {
 
     private static String user = "";
-    private static GamesAPIController controller = new SteamAdapter();
+    private static GamesAPIController controller;
     
     public static void main(String[] args) throws SteamApiException{
 
@@ -37,12 +37,15 @@ public class SteamApi {
         }       
 
         user = ler("Informe o usuário da Steam ou o Steam ID");
-        ArrayList<String> gamesList = controller.getOwnedGamesNames(user);
-        ArrayList<Integer> playtimeList = controller.getOwnedGamesPlaytimeForever(user);
+        controller = new SteamAdapter(user);
+        
+        ArrayList<String> gamesList = controller.getOwnedGamesNames();
+        ArrayList<Integer> playtimeList = controller.getOwnedGamesPlaytimeForever();
         
         exibir(gamesList);
+        exibir(playtimeList);
         
-        exibir(controller.getMostPlayedGame(user));
+        exibir("Most played game: " + controller.getMostPlayedGame());
     }
     
     private static String ler(String msg){
@@ -53,10 +56,10 @@ public class SteamApi {
         JOptionPane.showConfirmDialog(null, texto);
     }
         
-    private static void exibir(ArrayList<String> games){
+    private static void exibir(ArrayList<?> games){
         JTextArea textArea = new JTextArea("", 20, 40);
         int i=1;
-        for (String game : games) {
+        for (Object game : games) {
             if(textArea.getText().isEmpty()){
                 textArea.setText(i + " - " + game);
             }else{
