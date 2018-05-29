@@ -1,20 +1,11 @@
 package steamapi;
 
-import com.lukaspradel.steamapi.core.exception.SteamApiException;
-import com.lukaspradel.steamapi.data.json.ownedgames.Game;
-import com.lukaspradel.steamapi.data.json.ownedgames.GetOwnedGames;
-import com.lukaspradel.steamapi.data.json.resolvevanityurl.ResolveVanityURL;
-import com.lukaspradel.steamapi.webapi.client.SteamWebApiClient;
-import com.lukaspradel.steamapi.webapi.request.GetOwnedGamesRequest;
-import com.lukaspradel.steamapi.webapi.request.ResolveVanityURLRequest;
-import com.lukaspradel.steamapi.webapi.request.builders.SteamWebApiRequestFactory;
 import gamesapi.GamesAPIController;
-import gamesapi.SteamAdapter;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.util.ArrayList;
-import java.util.List;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
@@ -26,6 +17,7 @@ import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
+import ui.TelaPrincipal;
 
 /**
  *
@@ -36,7 +28,7 @@ public class SteamApi {
     private static String user = "";
     private static GamesAPIController controller;
     
-    public static void main(String[] args) throws SteamApiException{
+    public static void main(String[] args) throws Exception{
 
         try {
             UIManager.setLookAndFeel(new NimbusLookAndFeel());
@@ -44,17 +36,20 @@ public class SteamApi {
             e.printStackTrace();
         }       
 
-        user = ler("Informe o usuário da Steam ou o Steam ID");
-        controller = new SteamAdapter(user);
+//        user = ler("Informe o usuário da Steam ou o Steam ID");
+//        controller = new SteamAdapter(user);
         
-        ArrayList<String> gamesList = controller.getOwnedGamesNames();
-        ArrayList<Integer> playtimeList = controller.getOwnedGamesPlaytimeForever();
+//        ArrayList<String> gamesList = controller.getOwnedGamesNames();
+//        ArrayList<Integer> playtimeList = controller.getOwnedGamesPlaytimeForever();
         
 //        exibir(gamesList);
 //        exibir(playtimeList);
         
-          exibirJList(gamesList);
+//          exibirJList(gamesList);
 //        exibir("Most played game: " + controller.getMostPlayedGame());
+//          controller.getProfileImageUrl();
+        TelaPrincipal tela = new TelaPrincipal();
+        tela.setVisible(true);
     }
     
     private static String ler(String msg){
@@ -88,6 +83,7 @@ public class SteamApi {
             model.addElement((String) game);
         }
         JList list = new JList(model);
+        list.setBackground(Color.GRAY);
         list.setCellRenderer(new ImagesListRenderer());
         
         JScrollPane scroll = new JScrollPane(list);

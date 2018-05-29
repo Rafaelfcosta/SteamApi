@@ -13,4 +13,7 @@ public interface GamesAPIController {
     ArrayList<Integer> getOwnedGamesPlaytimeForever();
     String getMostPlayedGame();
     Map<String, ImageIcon> getGameImagesMap();
+    String getProfileImageUrlMedium();
+    String getProfileImageUrlFull();
+    String getProfileName();
 }

@@ -3,14 +3,17 @@ package gamesapi;
 import com.lukaspradel.steamapi.core.exception.SteamApiException;
 import com.lukaspradel.steamapi.data.json.ownedgames.Game;
 import com.lukaspradel.steamapi.data.json.ownedgames.GetOwnedGames;
+import com.lukaspradel.steamapi.data.json.playersummaries.GetPlayerSummaries;
 import com.lukaspradel.steamapi.data.json.resolvevanityurl.ResolveVanityURL;
 import com.lukaspradel.steamapi.webapi.client.SteamWebApiClient;
 import com.lukaspradel.steamapi.webapi.request.GetOwnedGamesRequest;
+import com.lukaspradel.steamapi.webapi.request.GetPlayerSummariesRequest;
 import com.lukaspradel.steamapi.webapi.request.ResolveVanityURLRequest;
 import com.lukaspradel.steamapi.webapi.request.builders.SteamWebApiRequestFactory;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.swing.ImageIcon;
 
@@ -29,6 +32,8 @@ public class SteamAdapter implements GamesAPIController{
     private SteamWebApiClient client = new SteamWebApiClient.SteamWebApiClientBuilder(key).build();
     private GetOwnedGamesRequest gamesRequest;
     private GetOwnedGames ownedGames;
+    private GetPlayerSummariesRequest playerSumariesRequest;
+    private GetPlayerSummaries playerSumaries;
 
     public SteamAdapter(String usernameOrId) throws SteamApiException{
         if(!usernameOrId.isEmpty()){
@@ -45,6 +50,12 @@ public class SteamAdapter implements GamesAPIController{
         if(success == 1 || byId){
             gamesRequest = new GetOwnedGamesRequest.GetOwnedGamesRequestBuilder(profile_id).includeAppInfo(true).includePlayedFreeGames(true).buildRequest();
             ownedGames = client.<GetOwnedGames>processRequest(gamesRequest);
+            
+            List<String> ids = new ArrayList<>();
+            ids.add(profile_id);
+            playerSumariesRequest = new GetPlayerSummariesRequest.GetPlayerSummariesRequestBuilder(ids).buildRequest();
+            playerSumaries = client.<GetPlayerSummaries>processRequest(playerSumariesRequest);
+            
         
         }else{
             System.out.println("No username/ID entered");
@@ -59,7 +70,7 @@ public class SteamAdapter implements GamesAPIController{
 //          System.out.println("Total Games: " + ownedGames.getResponse().getGameCount());
         
         for (Game game : ownedGames.getResponse().getGames()) {
-            if(game.getPlaytimeForever() > 2000){
+            if(game.getPlaytimeForever() > 0){
                 gamesList.add(game.getName());
             }
         }
@@ -91,6 +102,17 @@ public class SteamAdapter implements GamesAPIController{
         }
         return gameName;
     }
+    
+    @Override
+    public String getProfileImageUrlMedium(){
+//       return playerSumaries.getResponse().getPlayers().get(0).getAvatar();
+       return playerSumaries.getResponse().getPlayers().get(0).getAvatarmedium();
+    }
+    
+    @Override
+    public String getProfileImageUrlFull(){
+       return playerSumaries.getResponse().getPlayers().get(0).getAvatarfull();
+    }
 
     @Override
     public Map<String, ImageIcon> getGameImagesMap(){
@@ -98,7 +120,7 @@ public class SteamAdapter implements GamesAPIController{
         Map<String, ImageIcon> map = new HashMap<>();
         try {
             for (Game game : ownedGames.getResponse().getGames()) {
-                if(game.getPlaytimeForever() > 2000){
+                if(game.getPlaytimeForever() > 0){
                     map.put(game.getName(), new ImageIcon(new URL("http://media.steampowered.com/steamcommunity/public/images/apps/" + game.getAppid() + "/"  + game.getImgLogoUrl() + ".jpg" )));
                 }
             }
@@ -106,6 +128,11 @@ public class SteamAdapter implements GamesAPIController{
             ex.printStackTrace();
         }
         return map;
+    }
+
+    @Override
+    public String getProfileName() {
+        return playerSumaries.getResponse().getPlayers().get(0).getPersonaname();
     }
     
     
