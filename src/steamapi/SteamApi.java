@@ -49,6 +49,7 @@ public class SteamApi {
 //        exibir("Most played game: " + controller.getMostPlayedGame());
 //          controller.getProfileImageUrl();
         TelaPrincipal tela = new TelaPrincipal();
+        tela.setLocationRelativeTo(null);
         tela.setVisible(true);
     }
     

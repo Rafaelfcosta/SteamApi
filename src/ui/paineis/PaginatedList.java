@@ -17,14 +17,14 @@ import javax.swing.JScrollPane;
  *
  * @author Rafael
  */
-public class PainelMyGames extends JPanel {
+public class PaginatedList extends JPanel {
 
     private static GamesAPIController controller;
     
-    public PainelMyGames(GamesAPIController controller) {
+    public PaginatedList(GamesAPIController controller) {
         initComponents();
         
-        PainelMyGames.controller = controller;
+        PaginatedList.controller = controller;
         
         ArrayList<String> games = controller.getOwnedGamesNames();
         
@@ -35,14 +35,14 @@ public class PainelMyGames extends JPanel {
         JList list = new JList(model);
         list.setBackground(Color.GRAY);
         list.setCellRenderer(new ImagesListRenderer());
-        list.setLayoutOrientation(JList.VERTICAL_WRAP);
+        
         JScrollPane scroll = new JScrollPane(list);
-        //scroll.setPreferredSize(new Dimension(1024, 800));
+        scroll.setPreferredSize(new Dimension(800, 600));
         
         this.add(scroll);
     }
     
-    public static class ImagesListRenderer extends DefaultListCellRenderer{
+    public class ImagesListRenderer extends DefaultListCellRenderer{
         Font font = new Font("helvetica", Font.BOLD, 12);
         
         @Override

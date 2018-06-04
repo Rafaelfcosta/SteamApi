@@ -181,7 +181,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void painelMeusGamesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_painelMeusGamesMouseClicked
-        Thread t = new Thread(new Runnable() {
+        Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 painelMyGames = new PainelMyGames(controller);
@@ -190,7 +190,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 atualizarPainel();
             }
         });
-        t.start();
+        thread.start();
     }//GEN-LAST:event_painelMeusGamesMouseClicked
 
     private void painelPerfilMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_painelPerfilMouseClicked
