@@ -9,13 +9,17 @@ import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import ui.paineis.PainelMyGames;
 import ui.paineis.PainelProfile;
 
@@ -34,9 +38,17 @@ public class TelaPrincipal extends javax.swing.JFrame {
         
         this.labelImgUsuario.setIcon(new ImageIcon(new URL(controller.getProfileImageUrlMedium())));
         this.labelNomeUsuario.setText(controller.getProfileName());
-        
+
         painelProfile = new PainelProfile(new ImageIcon(new URL(controller.getProfileImageUrlFull())),labelNomeUsuario.getText());
         painelConteudo.add(painelProfile);
+               
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                painelMyGames = new PainelMyGames(controller);
+            }
+        });
+        thread.start();
         
         atualizarPainel();
     }
@@ -181,16 +193,16 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void painelMeusGamesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_painelMeusGamesMouseClicked
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                painelMyGames = new PainelMyGames(controller);
+//        Thread thread = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                painelMyGames = new PainelMyGames(controller);
                 painelConteudo.removeAll();
                 painelConteudo.add(painelMyGames);
                 atualizarPainel();
-            }
-        });
-        thread.start();
+//            }
+//        });
+//        thread.start();
     }//GEN-LAST:event_painelMeusGamesMouseClicked
 
     private void painelPerfilMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_painelPerfilMouseClicked

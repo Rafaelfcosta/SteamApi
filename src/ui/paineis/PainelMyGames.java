@@ -3,13 +3,16 @@ package ui.paineis;
 import gamesapi.GamesAPIController;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Map;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -27,6 +30,7 @@ public class PainelMyGames extends JPanel {
         PainelMyGames.controller = controller;
         
         ArrayList<String> games = controller.getOwnedGamesNames();
+        Map<String, Integer> map = controller.getOwnedGamesPlaytimeForever();
         
         DefaultListModel<String> model = new DefaultListModel();
         for (Object game : games) {
@@ -35,15 +39,31 @@ public class PainelMyGames extends JPanel {
         JList list = new JList(model);
         list.setBackground(Color.GRAY);
         list.setCellRenderer(new ImagesListRenderer());
-        list.setLayoutOrientation(JList.VERTICAL_WRAP);
-        JScrollPane scroll = new JScrollPane(list);
-        //scroll.setPreferredSize(new Dimension(1024, 800));
         
+        list.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt){
+                JList list = (JList) evt.getSource();
+                if(evt.getClickCount() == 2){
+                    float playtime = map.get(games.get(list.getSelectedIndex()));
+                    
+                    if(playtime < 60){
+                        exibir(games.get(list.getSelectedIndex()) + "\nPlaytime: " + (int)playtime + " mins");
+                        JLabel label = new JLabel();
+                    }else{
+                        playtime /= 60;
+                        exibir(games.get(list.getSelectedIndex()) + "\nPlaytime: " + (int)playtime + "h");
+                    }
+                    
+                }
+            }
+        });
+        
+        JScrollPane scroll = new JScrollPane(list);       
         this.add(scroll);
     }
     
     public static class ImagesListRenderer extends DefaultListCellRenderer{
-        Font font = new Font("helvetica", Font.BOLD, 12);
+        Font font = new Font("consolas", Font.PLAIN, 20);
         
         @Override
         public Component getListCellRendererComponent(
@@ -56,6 +76,14 @@ public class PainelMyGames extends JPanel {
             label.setFont(font);
             return label;
         }
+    }
+    
+    private static void exibir(String texto){
+        JOptionPane.showMessageDialog(null, texto);
+    }
+    
+    private static void exibir(Object msg){
+        JOptionPane.showMessageDialog(null, msg);
     }
 
     /**

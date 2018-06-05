@@ -10,7 +10,7 @@ import javax.swing.ImageIcon;
  */
 public interface GamesAPIController {
     ArrayList<String> getOwnedGamesNames();
-    ArrayList<Integer> getOwnedGamesPlaytimeForever();
+    Map<String, Integer> getOwnedGamesPlaytimeForever();
     String getMostPlayedGame();
     Map<String, ImageIcon> getGameImagesMap();
     String getProfileImageUrlMedium();

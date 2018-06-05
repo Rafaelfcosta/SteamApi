@@ -58,7 +58,7 @@ public class SteamAdapter implements GamesAPIController{
             
         
         }else{
-            System.out.println("No username/ID entered");
+            System.out.println("No username/ID entered or not find");
         }
     }
     
@@ -71,6 +71,7 @@ public class SteamAdapter implements GamesAPIController{
         
         for (Game game : ownedGames.getResponse().getGames()) {
             if(game.getPlaytimeForever() > 0){
+                Object a = ownedGames.getResponse().getAdditionalProperties().get(game.getName());
                 gamesList.add(game.getName());
             }
         }
@@ -78,16 +79,26 @@ public class SteamAdapter implements GamesAPIController{
         return gamesList;
     }
 
+//    @Override
+//    public ArrayList<Integer> getOwnedGamesPlaytimeForever(){
+//        ArrayList<Integer> playtimeList = new ArrayList<>();
+//        for (Game game : ownedGames.getResponse().getGames()) {
+//            playtimeList.add(game.getPlaytimeForever());
+//        }
+//                
+//        return playtimeList;
+//    }
+
     @Override
-    public ArrayList<Integer> getOwnedGamesPlaytimeForever(){
-        ArrayList<Integer> playtimeList = new ArrayList<>();
-        
+    public Map<String, Integer> getOwnedGamesPlaytimeForever() {
+        Map<String, Integer> map = new HashMap<>();
         for (Game game : ownedGames.getResponse().getGames()) {
-            playtimeList.add(game.getPlaytimeForever());
+            map.put(game.getName(), game.getPlaytimeForever());
         }
-                
-        return playtimeList;
+        return map;
     }
+    
+    
 
     @Override
     public String getMostPlayedGame(){
@@ -100,12 +111,12 @@ public class SteamAdapter implements GamesAPIController{
                 gameName = game.getName();
             }
         }
+        
         return gameName;
     }
     
     @Override
     public String getProfileImageUrlMedium(){
-//       return playerSumaries.getResponse().getPlayers().get(0).getAvatar();
        return playerSumaries.getResponse().getPlayers().get(0).getAvatarmedium();
     }
     
@@ -132,6 +143,7 @@ public class SteamAdapter implements GamesAPIController{
 
     @Override
     public String getProfileName() {
+//        System.out.println(playerSumaries.getResponse().getPlayers().get(0).getProfileurl());
         return playerSumaries.getResponse().getPlayers().get(0).getPersonaname();
     }
     

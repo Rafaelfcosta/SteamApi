@@ -1,7 +1,6 @@
 package ui.paineis;
 
 import javax.swing.Icon;
-import javax.swing.JLabel;
 
 /**
  *
@@ -11,26 +10,26 @@ public class PainelProfile extends javax.swing.JPanel {
 
     public PainelProfile(Icon icon, String name) {
         initComponents();
-        labelProfileIcon.setIcon(icon);
-        labelProfileName.setText(name);
+        labelProfile.setIcon(icon);
+        labelProfile.setText(name);
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        labelProfileIcon = new javax.swing.JLabel();
-        labelProfileName = new javax.swing.JLabel();
+        labelProfile = new javax.swing.JLabel();
 
-        add(labelProfileIcon);
+        setLayout(new java.awt.BorderLayout());
 
-        labelProfileName.setText("name");
-        add(labelProfileName);
+        labelProfile.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+        labelProfile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ressources/icons8-usuário-24.png"))); // NOI18N
+        labelProfile.setText("name");
+        add(labelProfile, java.awt.BorderLayout.PAGE_START);
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel labelProfileIcon;
-    private javax.swing.JLabel labelProfileName;
+    private javax.swing.JLabel labelProfile;
     // End of variables declaration//GEN-END:variables
 }
