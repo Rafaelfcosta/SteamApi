@@ -54,14 +54,18 @@ public class PainelMyGames extends JPanel {
                     label.setFont(new Font("consolas", Font.PLAIN, 20));
                     int playtime = playtimeMap.get(games.get(list.getSelectedIndex()));
                     String gameName = games.get(list.getSelectedIndex());
+                    
                     if(playtime < 60){
-                        label.setText("<html><center>" + gameName + "</center><br>Playtime: " + String.valueOf(playtime) +
-                                " Mins </html>");
+                        String texto = "<html><center>" + gameName + "</center><br>Playtime: " + String.valueOf(playtime) +
+                                " Mins </html>";
+                        label.setText(texto);
                         exibir(label, imagesMap.get(gameName));
+                        
                     }else{
                         playtime /= 60;
-                        label.setText("<html><center>" + gameName + "</center><br>Playtime: " + String.valueOf(playtime) + 
-                                " Hours </html>");
+                        String texto = "<html><center>" + gameName + "</center><br>Playtime: " + String.valueOf(playtime) + 
+                                " Hours </html>";
+                        label.setText(texto);
                         exibir(label, imagesMap.get(gameName));
                     }
                     

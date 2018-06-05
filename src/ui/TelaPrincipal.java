@@ -1,6 +1,7 @@
 package ui;
 
 import gamesapi.GamesAPIController;
+import gamesapi.GamesAPIListener;
 import gamesapi.SteamAdapter;
 import java.awt.Color;
 import java.awt.Component;
@@ -9,17 +10,14 @@ import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
+import ui.paineis.PainelLoading;
 import ui.paineis.PainelMyGames;
 import ui.paineis.PainelProfile;
 
@@ -29,6 +27,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private static String user;
     private static PainelMyGames painelMyGames;
     private static PainelProfile painelProfile;
+    private PainelLoading painelLoading = new PainelLoading();
    
     public TelaPrincipal() throws Exception {
         initComponents();
@@ -38,17 +37,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
         
         this.labelImgUsuario.setIcon(new ImageIcon(new URL(controller.getProfileImageUrlMedium())));
         this.labelNomeUsuario.setText(controller.getProfileName());
-
+        
+        setGlassPane(painelLoading);
+        
         painelProfile = new PainelProfile(new ImageIcon(new URL(controller.getProfileImageUrlFull())),labelNomeUsuario.getText());
-        painelConteudo.add(painelProfile);
-               
-//        Thread thread = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                painelMyGames = new PainelMyGames(controller);
-//            }
-//        });
-//        thread.start();
+        //painelConteudo.add(painelProfile);
+        painelConteudo.add(painelLoading);
         
         atualizarPainel();
     }
@@ -214,6 +208,19 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void atualizarPainel(){
         painelConteudo.repaint();
         painelConteudo.revalidate();
+        
+        GamesAPIListener listener = new GamesAPIListener() {
+            @Override
+            public void GettingData() {
+                painelLoading.setVisible(true);
+            }
+
+            
+            @Override
+            public void DataArrived() {
+                painelLoading.setVisible(false);
+            }
+        };
     }
     
     /**
