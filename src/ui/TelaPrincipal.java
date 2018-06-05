@@ -42,13 +42,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
         painelProfile = new PainelProfile(new ImageIcon(new URL(controller.getProfileImageUrlFull())),labelNomeUsuario.getText());
         painelConteudo.add(painelProfile);
                
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                painelMyGames = new PainelMyGames(controller);
-            }
-        });
-        thread.start();
+//        Thread thread = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                painelMyGames = new PainelMyGames(controller);
+//            }
+//        });
+//        thread.start();
         
         atualizarPainel();
     }
@@ -87,7 +87,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
     
     public static class ImagesListRenderer extends DefaultListCellRenderer{
-        Font font = new Font("helvetica", Font.BOLD, 12);
+        Font font = new Font("consolas", Font.BOLD, 12);
         
         @Override
         public Component getListCellRendererComponent(
@@ -193,16 +193,16 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void painelMeusGamesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_painelMeusGamesMouseClicked
-//        Thread thread = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                painelMyGames = new PainelMyGames(controller);
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                painelMyGames = new PainelMyGames(controller);
                 painelConteudo.removeAll();
                 painelConteudo.add(painelMyGames);
                 atualizarPainel();
-//            }
-//        });
-//        thread.start();
+            }
+        });
+        thread.start();
     }//GEN-LAST:event_painelMeusGamesMouseClicked
 
     private void painelPerfilMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_painelPerfilMouseClicked

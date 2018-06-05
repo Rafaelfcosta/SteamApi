@@ -1,22 +1,9 @@
 package steamapi;
 
-import gamesapi.GamesAPIController;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.util.ArrayList;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.DefaultListModel;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import ui.TelaPrincipal;
@@ -42,6 +29,7 @@ public class SteamApi {
             tela.setVisible(true);
         } catch (Exception ex) {
             Logger.getLogger(SteamApi.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, ex.getCause(), "Erro", JOptionPane.ERROR_MESSAGE);
             System.exit(0);
         }
         

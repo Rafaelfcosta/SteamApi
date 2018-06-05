@@ -1,6 +1,7 @@
 package ui.paineis;
 
 import gamesapi.GamesAPIController;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
@@ -10,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Map;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -30,7 +33,9 @@ public class PainelMyGames extends JPanel {
         PainelMyGames.controller = controller;
         
         ArrayList<String> games = controller.getOwnedGamesNames();
-        Map<String, Integer> map = controller.getOwnedGamesPlaytimeForever();
+        Map<String, Integer> playtimeMap = controller.getOwnedGamesPlaytimeForever();
+        Map<String, ImageIcon> imagesMap = controller.getGameImagesMap();
+        
         
         DefaultListModel<String> model = new DefaultListModel();
         for (Object game : games) {
@@ -41,17 +46,23 @@ public class PainelMyGames extends JPanel {
         list.setCellRenderer(new ImagesListRenderer());
         
         list.addMouseListener(new MouseAdapter() {
+            @Override
             public void mouseClicked(MouseEvent evt){
                 JList list = (JList) evt.getSource();
                 if(evt.getClickCount() == 2){
-                    float playtime = map.get(games.get(list.getSelectedIndex()));
-                    
+                    JLabel label = new JLabel();
+                    label.setFont(new Font("consolas", Font.PLAIN, 20));
+                    int playtime = playtimeMap.get(games.get(list.getSelectedIndex()));
+                    String gameName = games.get(list.getSelectedIndex());
                     if(playtime < 60){
-                        exibir(games.get(list.getSelectedIndex()) + "\nPlaytime: " + (int)playtime + " mins");
-                        JLabel label = new JLabel();
+                        label.setText("<html><center>" + gameName + "</center><br>Playtime: " + String.valueOf(playtime) +
+                                " Mins </html>");
+                        exibir(label, imagesMap.get(gameName));
                     }else{
                         playtime /= 60;
-                        exibir(games.get(list.getSelectedIndex()) + "\nPlaytime: " + (int)playtime + "h");
+                        label.setText("<html><center>" + gameName + "</center><br>Playtime: " + String.valueOf(playtime) + 
+                                " Hours </html>");
+                        exibir(label, imagesMap.get(gameName));
                     }
                     
                 }
@@ -60,6 +71,10 @@ public class PainelMyGames extends JPanel {
         
         JScrollPane scroll = new JScrollPane(list);       
         this.add(scroll);
+    }
+    
+    private static void exibir(Object msg, Icon icon){
+        JOptionPane.showMessageDialog(null, msg, "Details", JOptionPane.INFORMATION_MESSAGE, icon);
     }
     
     public static class ImagesListRenderer extends DefaultListCellRenderer{
@@ -78,14 +93,6 @@ public class PainelMyGames extends JPanel {
         }
     }
     
-    private static void exibir(String texto){
-        JOptionPane.showMessageDialog(null, texto);
-    }
-    
-    private static void exibir(Object msg){
-        JOptionPane.showMessageDialog(null, msg);
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
