@@ -24,7 +24,7 @@ import javax.swing.ImageIcon;
 public class SteamAdapter implements GamesAPIController{
     
     private static final String key = "EBB5731E63AA94B36333E6EA4DA6652D";
-    private static String profile_id = "";
+    private String profile_id = "";
     private ResolveVanityURL playerId = null;
     private boolean byId = false;
     private int success = 0;

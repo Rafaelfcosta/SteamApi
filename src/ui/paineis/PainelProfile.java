@@ -23,8 +23,10 @@ public class PainelProfile extends javax.swing.JPanel {
         setLayout(new java.awt.BorderLayout());
 
         labelProfile.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+        labelProfile.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelProfile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ressources/icons8-usuário-24.png"))); // NOI18N
         labelProfile.setText("name");
+        labelProfile.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 1, 20, 1));
         add(labelProfile, java.awt.BorderLayout.PAGE_START);
     }// </editor-fold>//GEN-END:initComponents
 
