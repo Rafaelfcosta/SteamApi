@@ -20,7 +20,7 @@ public class Loading extends javax.swing.JPanel {
     public Loading() {
         initComponents();
         jLabel1.setIcon(new ImageIcon("./src/ressources/loading.gif"));
-        setBackground(new Color((float) 0.01,(float) 0.01, (float) 0.01, (float) 0.05));
+        setBackground(new Color((float) 0.001,(float) 0.01, (float) 0.01, (float) 0.05));
     }
 
     /**
@@ -37,7 +37,6 @@ public class Loading extends javax.swing.JPanel {
         setLayout(new java.awt.BorderLayout());
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Loading...");
         add(jLabel1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 

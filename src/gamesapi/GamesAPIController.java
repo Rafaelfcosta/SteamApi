@@ -16,4 +16,5 @@ public interface GamesAPIController {
     String getProfileImageUrlMedium();
     String getProfileImageUrlFull();
     String getProfileName();
+    Integer getPersonState();
 }

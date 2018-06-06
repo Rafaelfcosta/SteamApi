@@ -1,12 +1,9 @@
 package steamapi;
 
-
 import com.alee.laf.WebLookAndFeel;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import javax.swing.UIManager;
-import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import ui.TelaPrincipal;
 
 /**
@@ -18,7 +15,6 @@ public class SteamApi {
     public static void main(String[] args){
 
         try {
-//            UIManager.setLookAndFeel(new NimbusLookAndFeel());
             WebLookAndFeel.install();
         } catch (Exception e) {
             e.printStackTrace();

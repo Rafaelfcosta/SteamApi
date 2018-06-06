@@ -1,4 +1,4 @@
-package gamesapi;
+package gamesapi.adapter;
 
 import com.lukaspradel.steamapi.core.exception.SteamApiException;
 import com.lukaspradel.steamapi.data.json.ownedgames.Game;
@@ -10,6 +10,7 @@ import com.lukaspradel.steamapi.webapi.request.GetOwnedGamesRequest;
 import com.lukaspradel.steamapi.webapi.request.GetPlayerSummariesRequest;
 import com.lukaspradel.steamapi.webapi.request.ResolveVanityURLRequest;
 import com.lukaspradel.steamapi.webapi.request.builders.SteamWebApiRequestFactory;
+import gamesapi.GamesAPIController;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -146,6 +147,10 @@ public class SteamAdapter implements GamesAPIController{
 //        System.out.println(playerSumaries.getResponse().getPlayers().get(0).getProfileurl());
         return playerSumaries.getResponse().getPlayers().get(0).getPersonaname();
     }
-    
+
+    @Override
+    public Integer getPersonState() {
+        return playerSumaries.getResponse().getPlayers().get(0).getPersonastate();
+    }
     
 }

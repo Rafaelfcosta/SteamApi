@@ -150,7 +150,7 @@
         <Container class="javax.swing.JPanel" name="painelMeusGames">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="33" green="33" red="33" type="rgb"/>
+              <Color blue="1f" green="16" red="f" type="rgb"/>
             </Property>
           </Properties>
           <Events>

@@ -2,7 +2,7 @@ package ui;
 
 import gamesapi.GamesAPIController;
 import gamesapi.GamesAPIListener;
-import gamesapi.SteamAdapter;
+import gamesapi.adapter.SteamAdapter;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -10,6 +10,7 @@ import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.net.MalformedURLException;
 import java.net.URL;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.ImageIcon;
@@ -34,14 +35,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
         initComponents();
         ConfigurarPaineis();
         user = ler("Informe o usuário da Steam ou o Steam ID");
-        controller = new SteamAdapter(user);
-        
-        this.labelImgUsuario.setIcon(new ImageIcon(new URL(controller.getProfileImageUrlMedium())));
-        this.labelNomeUsuario.setText(controller.getProfileName());
-        
+        controller = new SteamAdapter(user);        
         setGlassPane(painelLoading);
         
-        painelProfile = new PainelProfile(new ImageIcon(new URL(controller.getProfileImageUrlFull())),labelNomeUsuario.getText());
+        ConfigurarAvatarUser();
+        
+        painelProfile = new PainelProfile(controller, new ImageIcon(new URL(controller.getProfileImageUrlFull())));
         painelConteudo.add(painelProfile);
         
         atualizarPainel();
@@ -51,7 +50,41 @@ public class TelaPrincipal extends javax.swing.JFrame {
         return JOptionPane.showInputDialog(msg);
     }
     
-    public void ConfigurarPaineis(){
+    private void ConfigurarAvatarUser() throws MalformedURLException{
+        String status;
+        switch (controller.getPersonState()){
+            case 0:
+                status = "<font color='red'> Offline </font>";
+                break;
+            case 1:
+                status = "<font color='green'> Online </font>";
+                break;
+            case 2:
+                status = "Busy";
+                break;
+            case 3:
+                status = "Away";
+                break;
+            case 4:
+                status = "Snooze";
+                break;
+            case 5:
+                status = "Looking to trade";
+                break;
+            case 6:
+                status = "Looking to play";
+                break;
+            default:
+                status = "Undefined";
+        }
+        this.labelImgUsuario.setIcon(new ImageIcon(new URL(controller.getProfileImageUrlMedium())));
+        
+        String name = controller.getProfileName();
+        String texto = "<html> " + name + "<br>" + status + "</html>";
+        labelNomeUsuario.setText(texto);
+    }
+    
+    private void ConfigurarPaineis(){
         MouseListener listener = new MouseAdapter() {
             
             @Override
@@ -160,7 +193,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         painelMenu.add(painelPerfil);
 
-        painelMeusGames.setBackground(new java.awt.Color(51, 51, 51));
+        painelMeusGames.setBackground(new java.awt.Color(15, 22, 31));
         painelMeusGames.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 painelMeusGamesMouseClicked(evt);
