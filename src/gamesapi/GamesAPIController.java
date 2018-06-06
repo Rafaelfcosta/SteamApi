@@ -17,4 +17,6 @@ public interface GamesAPIController {
     String getProfileImageUrlFull();
     String getProfileName();
     Integer getPersonState();
+    ArrayList<String> getRecentPlayedGames();
+    String GetTotalGamesCount();
 }

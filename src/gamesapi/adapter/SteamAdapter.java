@@ -4,10 +4,12 @@ import com.lukaspradel.steamapi.core.exception.SteamApiException;
 import com.lukaspradel.steamapi.data.json.ownedgames.Game;
 import com.lukaspradel.steamapi.data.json.ownedgames.GetOwnedGames;
 import com.lukaspradel.steamapi.data.json.playersummaries.GetPlayerSummaries;
+import com.lukaspradel.steamapi.data.json.recentlyplayedgames.GetRecentlyPlayedGames;
 import com.lukaspradel.steamapi.data.json.resolvevanityurl.ResolveVanityURL;
 import com.lukaspradel.steamapi.webapi.client.SteamWebApiClient;
 import com.lukaspradel.steamapi.webapi.request.GetOwnedGamesRequest;
 import com.lukaspradel.steamapi.webapi.request.GetPlayerSummariesRequest;
+import com.lukaspradel.steamapi.webapi.request.GetRecentlyPlayedGamesRequest;
 import com.lukaspradel.steamapi.webapi.request.ResolveVanityURLRequest;
 import com.lukaspradel.steamapi.webapi.request.builders.SteamWebApiRequestFactory;
 import gamesapi.GamesAPIController;
@@ -35,6 +37,8 @@ public class SteamAdapter implements GamesAPIController{
     private GetOwnedGames ownedGames;
     private GetPlayerSummariesRequest playerSumariesRequest;
     private GetPlayerSummaries playerSumaries;
+    private GetRecentlyPlayedGamesRequest recentPlayedGamesRequest;
+    private GetRecentlyPlayedGames recentPlayedGames;
 
     public SteamAdapter(String usernameOrId) throws SteamApiException{
         if(!usernameOrId.isEmpty()){
@@ -57,6 +61,8 @@ public class SteamAdapter implements GamesAPIController{
             playerSumariesRequest = new GetPlayerSummariesRequest.GetPlayerSummariesRequestBuilder(ids).buildRequest();
             playerSumaries = client.<GetPlayerSummaries>processRequest(playerSumariesRequest);
             
+            recentPlayedGamesRequest = new GetRecentlyPlayedGamesRequest.GetRecentlyPlayedGamesRequestBuilder(ids.get(0)).count(5).buildRequest();
+            recentPlayedGames = client.processRequest(recentPlayedGamesRequest);
         
         }else{
             System.out.println("No username/ID entered or not find");
@@ -67,9 +73,7 @@ public class SteamAdapter implements GamesAPIController{
     
     @Override
     public ArrayList<String> getOwnedGamesNames(){
-        ArrayList<String> gamesList = new ArrayList<>();
-//          System.out.println("Total Games: " + ownedGames.getResponse().getGameCount());
-        
+        ArrayList<String> gamesList = new ArrayList<>();        
         for (Game game : ownedGames.getResponse().getGames()) {
             if(game.getPlaytimeForever() > 0){
                 Object a = ownedGames.getResponse().getAdditionalProperties().get(game.getName());
@@ -80,16 +84,6 @@ public class SteamAdapter implements GamesAPIController{
         return gamesList;
     }
 
-//    @Override
-//    public ArrayList<Integer> getOwnedGamesPlaytimeForever(){
-//        ArrayList<Integer> playtimeList = new ArrayList<>();
-//        for (Game game : ownedGames.getResponse().getGames()) {
-//            playtimeList.add(game.getPlaytimeForever());
-//        }
-//                
-//        return playtimeList;
-//    }
-
     @Override
     public Map<String, Integer> getOwnedGamesPlaytimeForever() {
         Map<String, Integer> map = new HashMap<>();
@@ -98,8 +92,6 @@ public class SteamAdapter implements GamesAPIController{
         }
         return map;
     }
-    
-    
 
     @Override
     public String getMostPlayedGame(){
@@ -128,7 +120,6 @@ public class SteamAdapter implements GamesAPIController{
 
     @Override
     public Map<String, ImageIcon> getGameImagesMap(){
-        
         Map<String, ImageIcon> map = new HashMap<>();
         try {
             for (Game game : ownedGames.getResponse().getGames()) {
@@ -144,13 +135,27 @@ public class SteamAdapter implements GamesAPIController{
 
     @Override
     public String getProfileName() {
-//        System.out.println(playerSumaries.getResponse().getPlayers().get(0).getProfileurl());
         return playerSumaries.getResponse().getPlayers().get(0).getPersonaname();
     }
 
     @Override
     public Integer getPersonState() {
         return playerSumaries.getResponse().getPlayers().get(0).getPersonastate();
+    }
+
+    @Override
+    public ArrayList<String> getRecentPlayedGames() {
+        ArrayList<String> recentGames = new ArrayList<>();
+        for (com.lukaspradel.steamapi.data.json.recentlyplayedgames.Game game : recentPlayedGames.getResponse().getGames()) {
+                recentGames.add(game.getName());
+        }
+        
+        return recentGames;
+    }
+
+    @Override
+    public String GetTotalGamesCount() {
+        return String.valueOf(ownedGames.getResponse().getGameCount());
     }
     
 }

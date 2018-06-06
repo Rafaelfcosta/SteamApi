@@ -1,6 +1,7 @@
 package ui;
 
 import gamesapi.GamesAPIController;
+import gamesapi.GamesAPIControllerFactory;
 import gamesapi.GamesAPIListener;
 import gamesapi.adapter.SteamAdapter;
 import java.awt.Color;
@@ -12,6 +13,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -35,13 +38,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         initComponents();
         ConfigurarPaineis();
         user = ler("Informe o usuário da Steam ou o Steam ID");
-        controller = new SteamAdapter(user);        
+        controller = GamesAPIControllerFactory.create(user);
         setGlassPane(painelLoading);
         
         ConfigurarAvatarUser();
-        
-        painelProfile = new PainelProfile(controller, new ImageIcon(new URL(controller.getProfileImageUrlFull())));
-        painelConteudo.add(painelProfile);
+        CarregarProfileInicial();
         
         atualizarPainel();
     }
@@ -82,6 +83,35 @@ public class TelaPrincipal extends javax.swing.JFrame {
         String name = controller.getProfileName();
         String texto = "<html> " + name + "<br>" + status + "</html>";
         labelNomeUsuario.setText(texto);
+    }
+    
+    private void CarregarProfileInicial(){
+        GamesAPIListener listener = new GamesAPIListener() {
+            @Override
+            public void GettingData() {
+                painelLoading.setVisible(true);
+            }
+
+            
+            @Override
+            public void DataArrived() {
+                painelLoading.setVisible(false);
+            }
+        };
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                listener.GettingData();
+                try {
+                    painelProfile = new PainelProfile(controller, new ImageIcon(new URL(controller.getProfileImageUrlFull())));
+                } catch (MalformedURLException ex) {
+                    Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                painelConteudo.add(painelProfile);
+                listener.DataArrived();
+            }
+        });
+        thread.start();
     }
     
     private void ConfigurarPaineis(){
@@ -211,7 +241,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         labelGames.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
         labelGames.setForeground(new java.awt.Color(255, 255, 255));
         labelGames.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelGames.setText("My Games");
+        labelGames.setText("Games");
         labelGames.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 10));
         painelMeusGames.add(labelGames, java.awt.BorderLayout.CENTER);
 

@@ -27,7 +27,9 @@ public class SteamApi {
             tela.setVisible(true);
         } catch (Exception ex) {
             Logger.getLogger(SteamApi.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, ex.getMessage());
+            if(ex.getMessage() != null){
+                JOptionPane.showMessageDialog(null, ex.getMessage());
+            }
             System.exit(0);
         }
         
