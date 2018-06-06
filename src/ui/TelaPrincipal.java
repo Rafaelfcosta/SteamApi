@@ -133,10 +133,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         getContentPane().add(painelDireita, java.awt.BorderLayout.CENTER);
 
-        painelMenu.setBackground(new java.awt.Color(51, 51, 51));
+        painelMenu.setBackground(new java.awt.Color(15, 22, 31));
+        painelMenu.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        painelMenu.setForeground(new java.awt.Color(255, 255, 255));
         painelMenu.setLayout(new java.awt.GridLayout(5, 0, 5, 0));
 
-        painelPerfil.setBackground(new java.awt.Color(153, 153, 153));
+        painelPerfil.setBackground(new java.awt.Color(31, 50, 68));
         painelPerfil.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 painelPerfilMouseClicked(evt);
@@ -145,6 +147,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         painelPerfil.setLayout(new java.awt.BorderLayout());
 
         labelNomeUsuario.setFont(new java.awt.Font("Consolas", 1, 18)); // NOI18N
+        labelNomeUsuario.setForeground(new java.awt.Color(255, 255, 255));
         labelNomeUsuario.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelNomeUsuario.setText("nome");
         labelNomeUsuario.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 10));

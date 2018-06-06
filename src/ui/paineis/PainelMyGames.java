@@ -17,6 +17,7 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import ui.utils.GameListRenderer;
 
 /**
  *
@@ -41,8 +42,8 @@ public class PainelMyGames extends JPanel {
             model.addElement((String) game);
         }
         JList list = new JList(model);
-        list.setBackground(Color.GRAY);
-        list.setCellRenderer(new ImagesListRenderer());
+        list.setBackground(new Color(15, 22, 31));
+        list.setCellRenderer(new GameListRenderer(controller));
         
         list.addMouseListener(new MouseAdapter() {
             @Override
@@ -80,21 +81,7 @@ public class PainelMyGames extends JPanel {
         JOptionPane.showMessageDialog(null, msg, "Details", JOptionPane.INFORMATION_MESSAGE, icon);
     }
     
-    public static class ImagesListRenderer extends DefaultListCellRenderer{
-        Font font = new Font("consolas", Font.PLAIN, 20);
-        
-        @Override
-        public Component getListCellRendererComponent(
-                JList list, Object value, int index, 
-                boolean isSelected, boolean cellHasFocus){
-            JLabel label = (JLabel) super.getListCellRendererComponent(
-                    list, value, index, isSelected, cellHasFocus);
-            label.setIcon(controller.getGameImagesMap().get((String) value));
-            label.setHorizontalTextPosition(JLabel.RIGHT);
-            label.setFont(font);
-            return label;
-        }
-    }
+    
     
     /**
      * This method is called from within the constructor to initialize the form.
